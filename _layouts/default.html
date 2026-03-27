@@ -4,17 +4,22 @@
   <meta charset="utf-8">
   <title>{{ page.title }}</title>
   <link rel="stylesheet" href="/assets/css/style.css">
+  {% include head.html %}
 </head>
 <body>
 
   <div style="display: flex;">
 
-    <!-- ✅ 사이드바 -->
+    <!-- 사이드바 -->
     <div style="width: 250px; padding: 20px; background: #f0f0f0;">
+        
+      <a href="{{ site.baseurl }}/">홈으로 돌아가기</a>
       <h3>📂 Categories</h3>
       <ul>
         {% for category in site.categories %}
-          <li>{{ category[0] }}</li>
+          <li>
+            <a href="{{ site.baseurl }}/categories/{{ category[0] | slugify }}/">{{ category[0] }}</a>
+          </li>
         {% endfor %}
       </ul>
 
@@ -28,7 +33,7 @@
       </ul>
     </div>
 
-    <!-- ✅ 메인 콘텐츠 -->
+    <!-- 메인 콘텐츠 -->
     <div style="flex: 1; padding: 20px;">
       {{ content }}
     </div>
