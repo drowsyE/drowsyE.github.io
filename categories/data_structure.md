@@ -1,5 +1,5 @@
 ---
 layout: category
 title: Data structure
-category: Data structure
+permalink: /categories/data-structure/
 ---

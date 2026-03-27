@@ -1,5 +1,5 @@
 ---
 layout: category
 title: Math
-category: Math
+permalink: /categories/math/
 ---
