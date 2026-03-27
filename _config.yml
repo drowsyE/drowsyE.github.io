@@ -3,6 +3,6 @@ title: drowsyE's blog
 description: personal archive
 baseurl: ""
 url: "https://drowsyE.github.io"
-# permalink: /posts/:title/
-kramdown:
+permalink: /:categories/:title/
+kramdown: 
   math_engine: mathjax
