@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>$O(nlogn)$ 정렬 알고리즘</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>$O(nlogn)$ 정렬 알고리즘 | drowsyE’s blog</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="$O(nlogn)$ 정렬 알고리즘" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="시간 복잡도가 $O(n\log n)$인 대표적인 3가지 정렬 알고리즘에 대해 알아보자." />
+<meta property="og:description" content="시간 복잡도가 $O(n\log n)$인 대표적인 3가지 정렬 알고리즘에 대해 알아보자." />
+<link rel="canonical" href="http://localhost:4000/algorithm/sorting-2/" />
+<meta property="og:url" content="http://localhost:4000/algorithm/sorting-2/" />
+<meta property="og:site_name" content="drowsyE’s blog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-03-28T00:00:00+09:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="$O(nlogn)$ 정렬 알고리즘" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2026-03-28T00:00:00+09:00","datePublished":"2026-03-28T00:00:00+09:00","description":"시간 복잡도가 $O(n\\log n)$인 대표적인 3가지 정렬 알고리즘에 대해 알아보자.","headline":"$O(nlogn)$ 정렬 알고리즘","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/algorithm/sorting-2/"},"url":"http://localhost:4000/algorithm/sorting-2/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css">
+
+  
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    /* 제목 줄바꿈 방지 및 수식 간격 조정 */
+    .post-title { word-break: keep-all; line-height: 1.4; }
+    .MathJax { font-size: 110%; }
+  </style>
+</head>
+</head>
+<body>
+  <!-- <nav class="breadcrumb">
+    <a href="/">Home</a> &gt; 
+      <a href="/categories/algorithm/">
+      Algorithm
+    </a>
+  </nav> -->
+
+  <div style="display: flex;">
+
+    <!-- 사이드바 -->
+    <div style="width: 250px; padding: 20px; background: #f0f0f0;">
+
+      <a href="/">홈으로 돌아가기</a>
+      <h3>📂 Categories</h3>
+      <ul>
+        
+          <li>
+            <a href="/categories/data-structure/">Data structure</a>
+          </li>
+        
+          <li>
+            <a href="/categories/algorithm/">Algorithm</a>
+          </li>
+        
+      </ul>
+
+      <h3>📝 Recent Posts</h3>
+      <ul>
+        
+          <li>
+            <a href="/algorithm/sorting-2/">$O(nlogn)$ 정렬 알고리즘</a>
+          </li>
+        
+          <li>
+            <a href="/algorithm/sorting-1/">$O(n^2)$ 정렬 알고리즘</a>
+          </li>
+        
+          <li>
+            <a href="/data%20structure/linkedlist/">연결 리스트</a>
+          </li>
+        
+      </ul>
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <div style="flex: 1; padding: 20px;">
+      <style>
+  .post-header {
+    position: relative !important;
+    top: auto !important;
+    display: block !important;
+    margin-bottom: 2rem;
+    z-index: 1;
+    width: 100%;
+    
+  }
+
+  .post-title {
+    line-height: 1.4 !important;
+    margin-top: 0;
+    padding-top: 10px;
+  }
+
+  .post-content {
+    clear: both;
+    margin-top: 20px;
+  }
+</style>
+
+<article class="post-container">
+  <header class="post-header">
+    <h1 class="post-title">$O(nlogn)$ 정렬 알고리즘</h1>
+    <div class="post-meta">
+      <time datetime="2026-03-28T00:00:00+09:00">
+        2026년 03월 28일
+      </time>
+      
+        | <span>Algorithm</span>
+      
+      <div> 
+      
+        Tags : <span>Quick sort, Heap sort, Merge sort</span>
+      
+    </div>
+  </header>
+
+  <div class="post-content">
+    <hr>
+    <p>시간 복잡도가 $O(n\log n)$인 대표적인 3가지 정렬 알고리즘에 대해 알아보자.</p>
+
+<h2 id="1-퀵-정렬--quick-sort">1. 퀵 정렬 / Quick sort</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span>
+<span class="cp">#define swap(a, b) {int temp = (a); (a) = (b); (b) = temp;}
+</span>
+<span class="kt">void</span> <span class="nf">quick</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">left</span><span class="p">,</span> <span class="kt">int</span> <span class="n">right</span><span class="p">)</span> <span class="p">{</span>   
+    <span class="k">if</span> <span class="p">(</span><span class="n">left</span> <span class="o">&gt;=</span> <span class="n">right</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+    
+    <span class="kt">int</span> <span class="n">lo</span> <span class="o">=</span> <span class="n">left</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">right</span><span class="p">;</span>
+    <span class="c1">// pivot을 왼쪽 끝으로 설정했으므로, 나중에 right와 교환한다.</span>
+    <span class="c1">// pivot을 오른쪽 끝으로 설정한 경우, left랑 교환한다.</span>
+    <span class="kt">int</span> <span class="n">pivot</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">left</span><span class="p">];</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">lo</span> <span class="o">&lt;=</span> <span class="n">hi</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">lo</span> <span class="o">&lt;=</span> <span class="n">hi</span> <span class="o">&amp;&amp;</span> <span class="n">pivot</span> <span class="o">&gt;=</span> <span class="n">arr</span><span class="p">[</span><span class="n">lo</span><span class="p">])</span> <span class="o">++</span><span class="n">lo</span><span class="p">;</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">lo</span> <span class="o">&lt;=</span> <span class="n">hi</span> <span class="o">&amp;&amp;</span> <span class="n">pivot</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">hi</span><span class="p">])</span> <span class="o">--</span><span class="n">hi</span><span class="p">;</span>    
+        <span class="k">if</span> <span class="p">(</span><span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">)</span> <span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">lo</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">hi</span><span class="p">]);</span>         
+    <span class="p">}</span>
+    <span class="n">swap</span><span class="p">(</span><span class="n">pivot</span><span class="p">,</span> <span class="n">arr</span><span class="p">[</span><span class="n">hi</span><span class="p">]);</span>                           
+
+    <span class="n">quick</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">hi</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>    
+    <span class="n">quick</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">hi</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">right</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">arr</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="n">quick</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="2-힙-정렬--heap-sort">2. 힙 정렬 / Heap sort</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="c1"> // for malloc</span><span class="cp">
+#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="c1"> // for memcpy    </span><span class="cp">
+</span>
+<span class="k">typedef</span> <span class="k">struct</span> <span class="n">heap</span> <span class="p">{</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">arr</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">capacity</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">size</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">MinHeap</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">init</span><span class="p">(</span><span class="n">MinHeap</span><span class="o">*</span> <span class="n">heap</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">heap</span><span class="o">-&gt;</span><span class="n">capacity</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+    <span class="n">heap</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span> <span class="n">calloc</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">downheap</span><span class="p">(</span><span class="n">MinHeap</span><span class="o">*</span> <span class="n">heap</span><span class="p">,</span> <span class="kt">int</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">p</span><span class="o">*</span><span class="mi">2</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">key</span> <span class="o">=</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">p</span><span class="p">];</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">c</span> <span class="o">&lt;=</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">c</span> <span class="o">!=</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">&amp;&amp;</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="o">++</span><span class="n">c</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">key</span> <span class="o">&lt;=</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">c</span><span class="p">])</span> <span class="k">break</span><span class="p">;</span>
+
+        <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">c</span><span class="p">];</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">c</span><span class="p">;</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">p</span><span class="o">*</span><span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">pop</span><span class="p">(</span><span class="n">MinHeap</span><span class="o">*</span> <span class="n">heap</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">heap</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">"Pop from empty heap!</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">ret</span> <span class="o">=</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">[</span><span class="n">heap</span><span class="o">-&gt;</span><span class="n">size</span><span class="o">--</span><span class="p">];</span>
+    <span class="n">downheap</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">clear</span><span class="p">(</span><span class="n">MinHeap</span><span class="o">*</span> <span class="n">heap</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="p">);</span>
+    <span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="n">heap</span><span class="o">-&gt;</span><span class="n">capacity</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">heap</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">heapify</span><span class="p">(</span><span class="n">MinHeap</span><span class="o">*</span> <span class="n">heap</span><span class="p">,</span> <span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">heap</span><span class="o">-&gt;</span><span class="n">arr</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">n</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span>
+    <span class="n">heap</span><span class="o">-&gt;</span><span class="n">size</span> <span class="o">=</span> <span class="n">n</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">heap</span><span class="o">-&gt;</span><span class="n">size</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span> <span class="o">--</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">downheap</span><span class="p">(</span><span class="n">heap</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">heapSort</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// build heap</span>
+    <span class="n">MinHeap</span> <span class="n">minheap</span><span class="p">;</span>
+    <span class="n">init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">minheap</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+    <span class="n">heapify</span><span class="p">(</span><span class="o">&amp;</span><span class="n">minheap</span><span class="p">,</span> <span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+    <span class="c1">// pop</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">minheap</span><span class="p">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span> <span class="n">pop</span><span class="p">(</span><span class="o">&amp;</span><span class="n">minheap</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="n">clear</span><span class="p">(</span><span class="o">&amp;</span><span class="n">minheap</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">arr</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="n">heapSort</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="3-합병-정렬--merge-sort">3. 합병 정렬 / Merge sort</h2>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="c1"> // for malloc</span><span class="cp">
+#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="c1"> // for memcpy (optional)</span><span class="cp">
+</span>
+<span class="kt">void</span> <span class="nf">_merge_sort</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">temp</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">low</span><span class="p">,</span> <span class="kt">int</span> <span class="n">high</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">low</span> <span class="o">&gt;=</span> <span class="n">high</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">high</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+
+    <span class="n">_merge_sort</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">low</span><span class="p">,</span> <span class="n">mid</span><span class="p">);</span>
+    <span class="n">_merge_sort</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">high</span><span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">low</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">mid</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">mid</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">high</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="p">{</span>
+            <span class="n">temp</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">temp</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="o">++</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// copy remaining values</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">mid</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">mid</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">temp</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">j</span> <span class="o">&lt;=</span> <span class="n">high</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">temp</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="o">++</span><span class="p">];</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">arr</span> <span class="o">+</span> <span class="n">low</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">high</span><span class="o">-</span><span class="n">low</span><span class="o">+</span><span class="mi">1</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// auxiliary array for storing sorted values</span>
+    <span class="kt">int</span><span class="o">*</span> <span class="n">temp</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">*</span> <span class="n">n</span><span class="p">);</span>
+    <span class="n">_merge_sort</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">free</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">arr</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">};</span>
+    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="n">merge_sort</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"%d "</span><span class="p">,</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+  </div>
+
+  <nav class="post-navigation">
+    
+      <a href="/algorithm/sorting-1/">← $O(n^2)$ 정렬 알고리즘</a>
+    
+     | 
+    
+  </nav>
+</article>
+    </div>
+
+  </div>
+
+</body>
+</html>
