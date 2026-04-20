@@ -4,5 +4,6 @@ description: personal archive
 baseurl: ""
 url: "https://drowsyE.github.io"
 permalink: /:categories/:title/
+timezone: Asia/Seoul
 kramdown: 
   math_engine: mathjax
