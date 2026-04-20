@@ -82,6 +82,14 @@
       <ul>
         
           <li>
+            <a href="/algorithm/gpu_prefix_sum/">GPU prefix sum</a>
+          </li>
+        
+          <li>
+            <a href="/algorithm/sorting-3/">기타 정렬 알고리즘들</a>
+          </li>
+        
+          <li>
             <a href="/algorithm/sorting-2/">$O(nlogn)$ 정렬 알고리즘</a>
           </li>
         
@@ -142,6 +150,7 @@
     <hr>
     <p>시간 복잡도가 O($n^2$)인 대표적인 정렬 알고리즘에 대해 알아보자.</p>
 
+<p><br /></p>
 <h2 id="1-순차-정렬--sequential-sort">1. 순차 정렬 / Sequential sort</h2>
 
 <p>가장 기본적인 정렬 알고리즘으로, 맨 앞에서부터 제일 작은 원소를 배치하게 만들어 나가는 알고리즘이다.</p>
@@ -175,6 +184,7 @@
   <li>두 원소를 교환(swap)하는 연산이 매우 빈번하게 일어나 효율성이 떨어지기 떄문에 잘 사용하지 않는다.</li>
 </ol>
 
+<p><br /></p>
 <h2 id="2--버블-정렬--bubble-sort">2.  버블 정렬 / Bubble sort</h2>
 
 <p>이웃한 두 원소를 비교하며 정렬하는 알고리즘으로, 한 번의 cycle이 지나면 제일 큰 값이 맨 뒤에 위치하게 된다.</p>
@@ -201,7 +211,7 @@
   <li>시간 복잡도는 최선/최악의 경우 모두 $O(n^2)$이다.</li>
   <li>동일한 값을 가지는 원소 간의 순서를 보존하는 <strong>안정 정렬(Stable sort)</strong>이다.</li>
   <li>외부 메모리를 사용하지 않는다.</li>
-  <li>한번의 cycle에서 원소의 교환이 이루어졌는지 확인하는 flag 변수를 두면, 최선의 경우의 시간 복잡도가 $O(n)$으로 개선된다.</li>
+  <li>한번의 cycle에서 원소의 교환이 이루어졌는지 확인하는 flag 변수를 두면, 시간 복잡도가 $O(n)$으로 개선된다.</li>
 </ol>
 
 <p>아래는 개선된 버블 정렬이다.</p>
@@ -226,6 +236,7 @@
 
 <p>이미 정렬된 데이터에 대해, 개선된 버블 정렬은 이웃한 원소들끼리의 대소 비교를 한 번 진행하고 반복문을 탈출한다.</p>
 
+<p><br /></p>
 <h2 id="3--선택-정렬--selection-sort">3.  선택 정렬 / Selection sort</h2>
 
 <p>순차 정렬과 동일하게 맨 앞에서부터 제일 작은 원소를 배치해 나가는 알고리즘이지만, 한 번의 cycle에 swap이 1번만 발생한다는 점에서 순차정렬과 다르다.</p>
@@ -255,17 +266,22 @@
   <li>외부 메모리를 사용하지 않는다.</li>
 </ol>
 
+<p><br /></p>
 <h2 id="4-삽입-정렬--insertion-sort">4. 삽입 정렬 / Insertion sort</h2>
 
 <p>삽입 정렬은 점진적으로 정렬 범위를 넓혀 나가는 알고리즘으로, 정렬을 해야하는 새로운 원소가 정렬되어 있는 부분을 탐색하며 자신보다 작은 원소를 찾을 때까지 이동하며 자리를 교환한다.</p>
 
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#define swap(a, b) {int temp = a; a = b; b = temp;}
-</span>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 <span class="kt">void</span> <span class="nf">insertion_sort</span><span class="p">(</span><span class="kt">int</span> <span class="n">arr</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">n</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+
+    <span class="kt">int</span> <span class="n">key</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">];</span> <span class="n">j</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">swap</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">key</span><span class="p">;</span> <span class="n">j</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
         <span class="p">}</span>
+        <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">key</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div></div>
