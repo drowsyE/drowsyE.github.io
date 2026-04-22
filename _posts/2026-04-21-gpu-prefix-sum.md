@@ -43,7 +43,7 @@ $k ≥ 2^{d-1}$ 인 $x_k$에 대해 $x[k] = x[k - 2^{d-1}] + x[k]$를 총 $log_2
 
 - 장점 :
     1. **최저 지연 시간 (Minimum Latency):** 연산 깊이가 ⌈log2n⌉로, 병렬 Prefix sum 알고리즘 중 가장 빠르다.
-    2. **낮은 분기 분기 (Low Branch Divergence):** 스레드들이 수행하는 작업이 정형화되어 있어 `if-else`에 의한 성능 저하가 적다.
+    2. **적은 분기 (Low Branch Divergence):** 스레드들이 수행하는 작업이 정형화되어 있어 `if-else`에 의한 성능 저하가 적다.
     3. **높은 SIMD 효율성:** 각 단계마다 대부분의 스레드가 활성화되어 연산을 수행하므로, GPU의 Warp 내 연산 유닛(ALU) 활용도가 극대화된다.
 - 단점 :
     1. **높은 작업 복잡도 (Work Inefficient):** 전체 연산 횟수가 $O(n log n)$ 이다. 이후 설명할 Blelloch scan ($O(n)$) 에 비해 절대적인 연산량 자체가 많아 전력 소모가 크다.
